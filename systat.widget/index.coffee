@@ -22,6 +22,10 @@ style: """
     font-size: 10pt
     margin-left: 1em
 
+  .error
+    color: orange
+    font-weight: bold
+
 
 """
 
