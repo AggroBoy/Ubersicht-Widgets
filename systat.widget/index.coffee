@@ -1,4 +1,4 @@
-command: "~/bin/stats.rb"
+command: "systat.widget/stats.rb"
 
 refreshFrequency: 60000
 
