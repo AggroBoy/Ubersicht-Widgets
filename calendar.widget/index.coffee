@@ -67,7 +67,7 @@ updateBody: (table, date) ->
   daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
   emptyDays = new Date(date.getFullYear(), date.getMonth(), 1).getDay() - 1
   if (emptyDays < 0)
-    emptyDays = 7
+    emptyDays = 6
 
   day = 1
   while (day <= daysInMonth)
