@@ -1,12 +1,3 @@
-sundayFirstCalendar = 'cal && date'
-
-mondayFirstCalendar =  'cal | awk \'{ print " "$0; getline; print "Mo Tu We Th Fr Sa Su"; \
-getline; if (substr($0,1,2) == " 1") print "                    1 "; \
-do { prevline=$0; if (getline == 0) exit; print " " \
-substr(prevline,4,17) " " substr($0,1,2) " "; } while (1) }\' && date'
-
-command: mondayFirstCalendar
-
 refreshFrequency: 60000
 
 style: """
@@ -47,46 +38,53 @@ style: """
 render: -> """
   <table>
     <thead>
+
     </thead>
     <tbody>
     </tbody>
   </table>
 """
 
-updateHeader: (rows, table) ->
+monthName: (month) ->
+  return ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"][month]
+
+updateHeader: (table, date) ->
+  month = "#{@monthName(date.getMonth())} #{date.getFullYear()}"
   thead = table.find("thead")
   thead.empty()
 
-  thead.append "<tr><td colspan='7'>#{rows[0]}</td></tr>"
+  thead.append "<tr><td colspan='7'>#{month}</td></tr>"
   tableRow = $("<tr></tr>").appendTo(thead)
-  daysOfWeek = rows[1].split(/\s+/)
 
-  for dayOfWeek in daysOfWeek
+  for dayOfWeek in ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     tableRow.append "<td>#{dayOfWeek}</td>"
 
-updateBody: (rows, table) ->
+updateBody: (table, date) ->
   tbody = table.find("tbody")
   tbody.empty()
 
-  rows.splice 0, 2
-  rows.pop()
-  today = rows.pop().split(/\s+/)[2]
+  today = date.getDate();
+  daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+  emptyDays = new Date(date.getFullYear(), date.getMonth(), 1).getDay() - 1
+  if (emptyDays < 0)
+    emptyDays = 7
 
-  for week, i in rows
-    days = week.split(/\s+/).filter (day) -> day.length > 0
+  day = 1
+  while (day <= daysInMonth)
     tableRow = $("<tr></tr>").appendTo(tbody)
-
-    if i == 0 and days.length < 7
-      for j in [days.length...7]
-        tableRow.append "<td></td>"
-
-    for day in days
-      cell = $("<td>#{day}</td>").appendTo(tableRow)
-      cell.addClass("today") if day == today
+    daysInWeek = 0
+    while (day <= daysInMonth && daysInWeek++ < 7)
+      if(emptyDays-- > 0)
+        $("<td></td>").appendTo(tableRow)
+      else
+        cell = $("<td>#{day}</td>").appendTo(tableRow)
+        cell.addClass("today") if day == today
+        day++
 
 update: (output, domEl) ->
-  rows = output.split("\n")
   table = $(domEl).find("table")
 
-  @updateHeader rows, table
-  @updateBody rows, table
+  date = new Date()
+
+  @updateHeader table, date
+  @updateBody table, date
