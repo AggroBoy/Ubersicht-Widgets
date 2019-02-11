@@ -11,8 +11,8 @@ end
 
 servers = {
     "thoth" => `~/bin/systat.py`.strip,
-    "horus" => readUrl("http://horus/systat"),
-    "shadowrealm" => readUrl("https://shadowrealm.org/systat")
+    #"horus" => readUrl("http://horus/systat"),
+    "shadowrealm" => readUrl("http://systat.shadowrealm.org/")
 }
 
 puts "<html><head></head><body>"
