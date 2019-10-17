@@ -1,7 +1,7 @@
 refreshFrequency: 60000
 
 style: """
-  top: 10px
+  top: 30px
   right: 128px
   color: #fff
   font-family: Helvetica Neue
