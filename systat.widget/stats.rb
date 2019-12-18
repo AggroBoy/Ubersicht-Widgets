@@ -11,7 +11,7 @@ end
 
 servers = {
     "thoth" => `~/bin/systat.py`.strip,
-    #"horus" => readUrl("http://horus/systat"),
+    "horus" => `slogin horus ~/bin/systat.py`.strip,
     "shadowrealm" => readUrl("http://systat.shadowrealm.org/")
 }
 
